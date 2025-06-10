@@ -70,8 +70,13 @@ Bytexl_FSD/
    git clone https://github.com/Digantraj/Bytexl_FSD.git
    cd Bytexl_FSD
    ```
-
-2. **Open `index.html` in your browser.**
+2. **Install Dependencies:**
+   
+   run this: (Node required)
+   ```bash
+   npm i
+   ```  
+5. **Open `index.html` in your browser.**
 
    You can use a local server for best results (e.g., [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension for VSCode).
 
