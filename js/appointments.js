@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const appointmentForm = document.getElementById('appointmentForm');
   const alertContainer = document.getElementById('alertContainer');
 
-  // Static data for doctors
   const doctors = [
     { id: 1, name: "Dr. Sarah Johnson", specialization: "Cardiologist", image: "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg" },
     { id: 2, name: "Dr. James Wilson", specialization: "Dermatologist", image: "https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg" },
@@ -32,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
     { id: 5, name: "Dr. Patricia Lee", specialization: "Orthopedic Surgeon", image: "https://images.pexels.com/photos/5407206/pexels-photo-5407206.jpeg" }
   ];
 
-  // Static time slots
   const timeSlots = [
     "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", 
     "11:00 AM", "11:30 AM", "01:00 PM", "01:30 PM",
@@ -40,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
     "04:00 PM", "04:30 PM"
   ];
 
-  // Sample appointments (would normally come from an API/database)
   let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
 
   // Tab switching functionality
@@ -70,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Populate doctor dropdown
   function populateDoctors() {
     doctors.forEach(doctor => {
       const option = document.createElement('option');
@@ -80,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Populate time slots dropdown
   function populateTimeSlots() {
     timeSlots.forEach(slot => {
       const option = document.createElement('option');
@@ -90,9 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Load appointments and display them
   function loadAppointments() {
-    // Clear tables
     if (upcomingTableBody) upcomingTableBody.innerHTML = '';
     if (pastTableBody) pastTableBody.innerHTML = '';
     
@@ -102,8 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let upcomingCount = 0;
     let pastCount = 0;
-    
-    // Filter appointments for current user
+
     const userAppointments = appointments.filter(appointment => 
       appointment.userId === currentUser.id
     );
@@ -113,11 +105,9 @@ document.addEventListener('DOMContentLoaded', function() {
       appointmentDate.setHours(0, 0, 0, 0);
       
       const doctor = doctors.find(doc => doc.id === parseInt(appointment.doctorId));
-      
-      // Create table row
+
       const row = document.createElement('tr');
-      
-      // Format date for display
+
       const formattedDate = new Intl.DateTimeFormat('en-US', { 
         year: 'numeric', 
         month: 'short', 
@@ -125,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }).format(new Date(appointment.date));
       
       if (appointmentDate >= today && appointment.status !== 'cancelled') {
-        // Upcoming appointment
         upcomingCount++;
         
         row.innerHTML = `
@@ -144,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         upcomingTableBody.appendChild(row);
       } else {
-        // Past appointment
         pastCount++;
         
         row.innerHTML = `
@@ -158,8 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
         pastTableBody.appendChild(row);
       }
     });
-    
-    // Show/hide no appointments message
+
     if (noUpcomingAppointments) {
       noUpcomingAppointments.style.display = upcomingCount === 0 ? 'block' : 'none';
     }
@@ -168,7 +155,6 @@ document.addEventListener('DOMContentLoaded', function() {
       noPastAppointments.style.display = pastCount === 0 ? 'block' : 'none';
     }
     
-    // Add event listeners to action buttons
     const cancelButtons = document.querySelectorAll('.btn-cancel');
     cancelButtons.forEach(button => {
       button.addEventListener('click', function() {
@@ -186,53 +172,39 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Cancel an appointment
   function cancelAppointment(appointmentId) {
-    // Find the appointment
     const appointmentIndex = appointments.findIndex(app => app.id === appointmentId);
     
     if (appointmentIndex !== -1) {
-      // Update the status to cancelled
       appointments[appointmentIndex].status = 'cancelled';
       
-      // Save to localStorage
       localStorage.setItem('appointments', JSON.stringify(appointments));
-      
-      // Show success message
+
       showAlert('Appointment cancelled successfully', 'success', alertContainer);
-      
-      // Reload appointments
+
       loadAppointments();
     }
   }
 
-  // Show reschedule form (simplified for demo)
   function showRescheduleForm(appointmentId) {
-    // In a real application, you would show a modal with a form to reschedule
-    // For this demo, we'll just switch to the booking tab and pre-fill some fields
-    
-    // Switch to book tab
+
     tabButtons.forEach(btn => btn.classList.remove('active'));
     tabPanes.forEach(pane => pane.classList.remove('active'));
     
     const bookBtn = document.querySelector('[data-tab="book"]');
     bookBtn.classList.add('active');
     document.getElementById('book').classList.add('active');
-    
-    // Show message
+
     showAlert('Please select a new date and time for your appointment', 'warning', alertContainer);
-    
-    // Find the appointment to pre-fill doctor
+
     const appointment = appointments.find(app => app.id === appointmentId);
     if (appointment) {
       doctorSelect.value = appointment.doctorId;
-      
-      // Cancel the old appointment
+
       cancelAppointment(appointmentId);
     }
   }
 
-  // Book an appointment
   if (appointmentForm) {
     appointmentForm.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -241,8 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const date = document.getElementById('date').value;
       const time = timeSelect.value;
       const reason = document.getElementById('reason').value;
-      
-      // Validate form
+
       if (!doctorId) {
         showAlert('Please select a doctor', 'error', alertContainer);
         return;
@@ -257,11 +228,9 @@ document.addEventListener('DOMContentLoaded', function() {
         showAlert('Please select a time slot', 'error', alertContainer);
         return;
       }
-      
-      // Get current user
+
       const currentUser = JSON.parse(localStorage.getItem('user'));
-      
-      // Create appointment object
+
       const newAppointment = {
         id: Date.now(),
         userId: currentUser.id,
@@ -272,8 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
         status: 'confirmed',
         createdAt: new Date().toISOString()
       };
-      
-      // Add to appointments array
+
       appointments.push(newAppointment);
       
       // Save to localStorage
@@ -281,14 +249,11 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Show success message
       showAlert('Appointment booked successfully', 'success', alertContainer);
-      
-      // Reset form
+
       appointmentForm.reset();
-      
-      // Load appointments
+
       loadAppointments();
-      
-      // Switch to upcoming tab
+
       setTimeout(() => {
         tabButtons.forEach(btn => btn.classList.remove('active'));
         tabPanes.forEach(pane => pane.classList.remove('active'));
@@ -300,18 +265,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Set minimum date for appointment booking
   const dateInput = document.getElementById('date');
   if (dateInput) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    
-    // Format date as YYYY-MM-DD
+
     const formattedDate = tomorrow.toISOString().split('T')[0];
     dateInput.setAttribute('min', formattedDate);
   }
 
-  // Initialize page
   populateDoctors();
   populateTimeSlots();
   loadAppointments();

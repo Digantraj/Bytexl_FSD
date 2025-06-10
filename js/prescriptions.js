@@ -4,13 +4,11 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Check if user is logged in, redirect to login if not
   if (!isLoggedIn()) {
     window.location.href = 'login.html';
     return;
   }
 
-  // DOM Elements
   const prescriptionsContainer = document.getElementById('prescriptionsContainer');
   const noPrescriptions = document.getElementById('noPrescriptions');
   const searchInput = document.getElementById('searchPrescription');
@@ -20,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const closeModal = document.querySelector('.close-modal');
   const alertContainer = document.getElementById('alertContainer');
 
-  // Sample data for doctors (would normally come from an API/database)
   const doctors = [
     { id: 1, name: "Dr. Sarah Johnson", specialization: "Cardiologist" },
     { id: 2, name: "Dr. James Wilson", specialization: "Dermatologist" },

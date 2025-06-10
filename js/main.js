@@ -3,11 +3,9 @@
  * Handles navigation, theme, and common functionality across all pages
  */
 
-// DOM Elements
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
 
-// Toggle mobile menu
 if (menuToggle) {
   menuToggle.addEventListener('click', () => {
     menuToggle.classList.toggle('active');
@@ -15,7 +13,6 @@ if (menuToggle) {
   });
 }
 
-// Close mobile menu when clicking outside
 document.addEventListener('click', (e) => {
   if (menuToggle && navLinks.classList.contains('active') && !e.target.closest('.nav')) {
     menuToggle.classList.remove('active');
@@ -23,7 +20,6 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Form validation utility functions
 const validation = {
   /**
    * Check if an email is valid
@@ -187,10 +183,8 @@ function init() {
   }
 }
 
-// Run initialization
 document.addEventListener('DOMContentLoaded', init);
 
-// Export utility functions for use in other scripts
 window.validation = validation;
 window.showAlert = showAlert;
 window.isLoggedIn = isLoggedIn;

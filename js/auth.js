@@ -4,7 +4,6 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Login Form
   const loginForm = document.getElementById('loginForm');
   
   if (loginForm) {
@@ -14,8 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const alertContainer = document.getElementById('alertContainer');
-      
-      // Validate email
+
       if (!validation.isValidEmail(email)) {
         validation.showError(document.getElementById('email'), 'Please enter a valid email address');
         return;
@@ -181,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
         id: Date.now(),
         name,
         email,
-        password, // In a real app, this would be hashed
+        password,
         age: parseInt(age),
         gender,
         phone,
@@ -194,14 +192,12 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Show success message
       showAlert('Registration successful! Redirecting to login...', 'success', alertContainer);
-      
-      // Redirect to login page after 2 seconds
+
       setTimeout(() => {
         window.location.href = 'login.html';
       }, 2000);
     });
-    
-    // Clear errors on input change
+
     const inputs = registerForm.querySelectorAll('.form-control');
     inputs.forEach(input => {
       input.addEventListener('input', function() {

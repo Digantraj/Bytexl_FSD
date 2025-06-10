@@ -4,17 +4,14 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Animate feature cards on scroll
   const featureCards = document.querySelectorAll('.feature-card');
   
   if (featureCards.length) {
-    // Remove the initial animation to control it with scroll
     featureCards.forEach(card => {
       card.style.animation = 'none';
       card.style.opacity = '0';
     });
-    
-    // Function to check if element is in viewport
+
     function isInViewport(element) {
       const rect = element.getBoundingClientRect();
       return (
@@ -22,8 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rect.bottom >= 0
       );
     }
-    
-    // Function to animate elements in viewport
+
     function animateOnScroll() {
       featureCards.forEach((card, index) => {
         if (isInViewport(card) && card.style.opacity === '0') {
@@ -33,13 +29,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     }
-    
-    // Check on load and scroll
+
     animateOnScroll();
     window.addEventListener('scroll', animateOnScroll);
   }
-  
-  // Smooth scroll for "Learn More" button
+
   const learnMoreBtn = document.querySelector('a[href="#features"]');
   
   if (learnMoreBtn) {
@@ -53,8 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-  
-  // Add testimonials dynamically (if they exist on the page)
+
   const testimonialsContainer = document.querySelector('.testimonials-container');
   
   if (testimonialsContainer) {
